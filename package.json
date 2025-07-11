@@ -6,7 +6,11 @@
   "type": "module",
   "scripts": {
     "example": "node ./example/server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -29,5 +33,11 @@
   "bugs": {
     "url": "https://github.com/IanKulin/mini-csrf/issues"
   },
-  "homepage": "https://github.com/IanKulin/mini-csrf#readme"
+  "homepage": "https://github.com/IanKulin/mini-csrf#readme",
+  "devDependencies": {
+    "eslint": "^9.30.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "prettier": "^3.6.2"
+  }
 }
