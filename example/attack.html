@@ -1,136 +1,144 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSRF Attack Demonstration</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: #fff5f5;
-            border: 2px solid #e53e3e;
-            border-radius: 8px;
-        }
-        
-        .warning {
-            background-color: #fed7d7;
-            color: #9b2c2c;
-            padding: 1rem;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            border: 1px solid #feb2b2;
-        }
-        
-        .attack-form {
-            background-color: #f7fafc;
-            padding: 1.5rem;
-            border-radius: 4px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .btn {
-            background-color: #e53e3e;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin: 0.5rem;
-        }
-        
-        .btn:hover {
-            background-color: #c53030;
-        }
-        
-        .explanation {
-            background-color: #edf2f7;
-            padding: 1rem;
-            border-radius: 4px;
-            margin-top: 1rem;
-            font-size: 0.9rem;
-            color: #4a5568;
-        }
-        
-        input[type="text"] {
-            width: 100%;
-            padding: 0.5rem;
-            margin: 0.5rem 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        
-        label {
-            display: block;
-            margin-top: 1rem;
-            font-weight: bold;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background-color: #fff5f5;
+        border: 2px solid #e53e3e;
+        border-radius: 8px;
+      }
+
+      .warning {
+        background-color: #fed7d7;
+        color: #9b2c2c;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        border: 1px solid #feb2b2;
+      }
+
+      .attack-form {
+        background-color: #f7fafc;
+        padding: 1.5rem;
+        border-radius: 4px;
+        border: 1px solid #e2e8f0;
+      }
+
+      .btn {
+        background-color: #e53e3e;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin: 0.5rem;
+      }
+
+      .btn:hover {
+        background-color: #c53030;
+      }
+
+      .explanation {
+        background-color: #edf2f7;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: #4a5568;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 0.5rem;
+        margin: 0.5rem 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: bold;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>CSRF Attack Demonstration</h1>
-    
+
     <div class="warning">
-        This page demonstrates a CSRF attack attempt. 
-        It should fail when submitted to the guest book application due to the mini-csrf protection.
+      This page demonstrates a CSRF attack attempt. It should fail when
+      submitted to the guest book application due to the mini-csrf protection.
     </div>
-    
+
     <div class="attack-form">
-        <h2>Malicious Form</h2>
-        <p>This form attempts to submit to the guest book with stale/invalid CSRF tokens:</p>
-        
-        <form action="http://localhost:3000/" method="POST" target="_blank">
-            <!-- Intentionally stale/invalid CSRF tokens -->
-            <input type="hidden" name="_csrf_token" value="invalid_token_12345" />
-            <input type="hidden" name="_csrf_time" value="1234567890000" />
-            
-            <label for="name">Name to inject:</label>
-            <input type="text" id="name" name="name" value="Malicious Attacker" />
-            
-            <button type="submit" class="btn">Attempt CSRF Attack</button>
-        </form>
-        
-        <div class="explanation">
-            <h3>What happens when you click the button:</h3>
-            <ul>
-                <li>The form submits to the guest book with invalid CSRF token</li>
-                <li>The mini-csrf middleware validates the token</li>
-                <li>The request is rejected with 403 Forbidden</li>
-                <li>The attacker's name is not added to the guest book</li>
-            </ul>
-        </div>
+      <h2>Malicious Form</h2>
+      <p>
+        This form attempts to submit to the guest book with stale/invalid CSRF
+        tokens:
+      </p>
+
+      <form action="http://localhost:3000/" method="POST" target="_blank">
+        <!-- Intentionally stale/invalid CSRF tokens -->
+        <input type="hidden" name="_csrf_token" value="invalid_token_12345" />
+        <input type="hidden" name="_csrf_time" value="1234567890000" />
+
+        <label for="name">Name to inject:</label>
+        <input type="text" id="name" name="name" value="Malicious Attacker" />
+
+        <button type="submit" class="btn">Attempt CSRF Attack</button>
+      </form>
+
+      <div class="explanation">
+        <h3>What happens when you click the button:</h3>
+        <ul>
+          <li>The form submits to the guest book with invalid CSRF token</li>
+          <li>The mini-csrf middleware validates the token</li>
+          <li>The request is rejected with 403 Forbidden</li>
+          <li>The attacker's name is not added to the guest book</li>
+        </ul>
+      </div>
     </div>
-    
+
     <div class="attack-form">
-        <h2>Missing Token Attack</h2>
-        <p>This form completely omits CSRF protection:</p>
-        
-        <form action="http://localhost:3000/" method="POST" target="_blank">
-            <!-- No CSRF tokens at all -->
-            <label for="name3">Name to inject:</label>
-            <input type="text" id="name3" name="name" value="Ghost User" />
-            
-            <button type="submit" class="btn">Attempt No-Token Attack</button>
-        </form>
-        
-        <div class="explanation">
-            <h3>What happens with this attack:</h3>
-            <ul>
-                <li>The form submits without any CSRF tokens</li>
-                <li>The mini-csrf middleware detects <strong>missing tokens</strong></li>
-                <li>The request is <strong>immediately rejected</strong></li>
-                <li>The attack fails before any processing occurs</li>
-            </ul>
-        </div>
+      <h2>Missing Token Attack</h2>
+      <p>This form completely omits CSRF protection:</p>
+
+      <form action="http://localhost:3000/" method="POST" target="_blank">
+        <!-- No CSRF tokens at all -->
+        <label for="name3">Name to inject:</label>
+        <input type="text" id="name3" name="name" value="Ghost User" />
+
+        <button type="submit" class="btn">Attempt No-Token Attack</button>
+      </form>
+
+      <div class="explanation">
+        <h3>What happens with this attack:</h3>
+        <ul>
+          <li>The form submits without any CSRF tokens</li>
+          <li>
+            The mini-csrf middleware detects <strong>missing tokens</strong>
+          </li>
+          <li>The request is <strong>immediately rejected</strong></li>
+          <li>The attack fails before any processing occurs</li>
+        </ul>
+      </div>
     </div>
-    
-    <div style="text-align: center; margin-top: 2rem;">
-        <a href="http://localhost:3000/" style="color: #3182ce; text-decoration: none; font-weight: bold;">
-            Go to Guest Book Application
-        </a>
+
+    <div style="text-align: center; margin-top: 2rem">
+      <a
+        href="http://localhost:3000/"
+        style="color: #3182ce; text-decoration: none; font-weight: bold"
+      >
+        Go to Guest Book Application
+      </a>
     </div>
-</body>
+  </body>
 </html>
