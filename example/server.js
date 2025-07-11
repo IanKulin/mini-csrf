@@ -26,58 +26,58 @@ const guestBook = [];
 
 // Routes
 app.get("/", (req, res) => {
-  res.render("index", { 
-    csrfTokenHtml: csrf.csrfTokenHtml(req)
+  res.render("index", {
+    csrfTokenHtml: csrf.csrfTokenHtml(req),
   });
 });
 
 app.post("/", (req, res) => {
   const { name } = req.body;
-  
+
   if (!name || name.trim() === "") {
-    return res.render("index", { 
+    return res.render("index", {
       csrfTokenHtml: csrf.csrfTokenHtml(req),
-      error: "Please enter your name"
+      error: "Please enter your name",
     });
   }
-  
+
   // Add to guest book
   guestBook.push({
     name: name.trim(),
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
-  
+
   res.redirect("/guestbook");
 });
 
 app.get("/guestbook", (req, res) => {
-  res.render("guestbook", { 
-    entries: guestBook
+  res.render("guestbook", {
+    entries: guestBook,
   });
 });
 
 // CSRF error handler
 app.use((err, req, res, next) => {
   if (err.code === "EBADCSRFTOKEN") {
-    return res.status(403).render("error", { 
-      message: "Invalid CSRF token. Please try again." 
+    return res.status(403).render("error", {
+      message: "Invalid CSRF token. Please try again.",
     });
   }
   next(err);
 });
 
 // Generic error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
-  res.status(500).render("error", { 
-    message: "Something went wrong!" 
+  res.status(500).render("error", {
+    message: "Something went wrong!",
   });
 });
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).render("error", { 
-    message: "Page not found" 
+  res.status(404).render("error", {
+    message: "Page not found",
   });
 });
 
