@@ -1,6 +1,9 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert";
-import csrfProtection, { constantTimeEquals } from "../mini-csrf.js";
+import csrfProtection, {
+  constantTimeEquals,
+  validateFieldName,
+} from "../mini-csrf.js";
 import crypto from "crypto";
 
 describe("CSRF Protection", () => {
@@ -79,6 +82,33 @@ describe("CSRF Protection", () => {
       const html = protection.csrfTokenHtml(mockReq);
       assert.match(html, /name="custom_token"/);
       assert.match(html, /name="custom_time"/);
+    });
+
+    it("should throw error for invalid token field name", () => {
+      assert.throws(() => {
+        csrfProtection({
+          secret: "supersecretkey123456789012345678901234567890",
+          fieldNames: { token: "invalid<script>", time: "valid_time" },
+        });
+      }, /Invalid token field name/);
+    });
+
+    it("should throw error for invalid time field name", () => {
+      assert.throws(() => {
+        csrfProtection({
+          secret: "supersecretkey123456789012345678901234567890",
+          fieldNames: { token: "valid_token", time: 'invalid"name' },
+        });
+      }, /Invalid time field name/);
+    });
+
+    it("should throw error for duplicate field names", () => {
+      assert.throws(() => {
+        csrfProtection({
+          secret: "supersecretkey123456789012345678901234567890",
+          fieldNames: { token: "same_name", time: "same_name" },
+        });
+      }, /Token and time field names must be different/);
     });
   });
 
@@ -325,7 +355,7 @@ describe("constantTimeEquals", () => {
     const longStr1 = "a".repeat(300);
     const longStr2 = "a".repeat(300);
     const longStr3 = "a".repeat(299) + "b";
-    
+
     assert.strictEqual(constantTimeEquals(longStr1, longStr2), true);
     assert.strictEqual(constantTimeEquals(longStr1, longStr3), false);
   });
@@ -334,8 +364,81 @@ describe("constantTimeEquals", () => {
     const token1 = "abc123def456ghi789";
     const token2 = "abc123def456ghi789";
     const token3 = "abc123def456ghi788";
-    
+
     assert.strictEqual(constantTimeEquals(token1, token2), true);
     assert.strictEqual(constantTimeEquals(token1, token3), false);
+  });
+});
+
+describe("validateFieldName", () => {
+  it("should accept valid field names", () => {
+    assert.doesNotThrow(() => validateFieldName("valid_name", "test"));
+    assert.doesNotThrow(() => validateFieldName("valid-name", "test"));
+    assert.doesNotThrow(() => validateFieldName("validName123", "test"));
+    assert.doesNotThrow(() => validateFieldName("123valid", "test"));
+  });
+
+  it("should reject field names with special characters", () => {
+    assert.throws(
+      () => validateFieldName("invalid<script>", "test"),
+      /Invalid test field name/
+    );
+    assert.throws(
+      () => validateFieldName('invalid"name', "test"),
+      /Invalid test field name/
+    );
+    assert.throws(
+      () => validateFieldName("invalid'name", "test"),
+      /Invalid test field name/
+    );
+    assert.throws(
+      () => validateFieldName("invalid name", "test"),
+      /Invalid test field name/
+    );
+    assert.throws(
+      () => validateFieldName("invalid&name", "test"),
+      /Invalid test field name/
+    );
+    assert.throws(
+      () => validateFieldName("invalid=name", "test"),
+      /Invalid test field name/
+    );
+  });
+
+  it("should reject empty field names", () => {
+    assert.throws(
+      () => validateFieldName("", "test"),
+      /Invalid test field name/
+    );
+  });
+
+  it("should reject non-string field names", () => {
+    assert.throws(
+      () => validateFieldName(123, "test"),
+      /Invalid test field name/
+    );
+    assert.throws(
+      () => validateFieldName(null, "test"),
+      /Invalid test field name/
+    );
+    assert.throws(
+      () => validateFieldName(undefined, "test"),
+      /Invalid test field name/
+    );
+    assert.throws(
+      () => validateFieldName({}, "test"),
+      /Invalid test field name/
+    );
+  });
+
+  it("should include field type in error message", () => {
+    assert.throws(
+      () => validateFieldName("invalid<", "token"),
+      /Invalid token field name/
+    );
+    assert.throws(
+      () => validateFieldName("invalid<", "time"),
+      /Invalid time field name/
+    );
   });
 });

@@ -15,6 +15,14 @@ export function constantTimeEquals(a, b) {
   return result === 0;
 }
 
+export function validateFieldName(name, type) {
+  if (typeof name !== "string" || !/^[a-zA-Z0-9_-]+$/.test(name)) {
+    throw new Error(
+      `Invalid ${type} field name: must contain only alphanumeric characters, underscores, or hyphens`
+    );
+  }
+}
+
 export default function csrfProtection({
   secret,
   fieldNames = { token: "_csrf_token", time: "_csrf_time" },
@@ -22,6 +30,13 @@ export default function csrfProtection({
 }) {
   if (!secret || secret.length < 32) {
     throw new Error("CSRF secret must be at least 32 characters long");
+  }
+
+  validateFieldName(fieldNames.token, "token");
+  validateFieldName(fieldNames.time, "time");
+
+  if (fieldNames.token === fieldNames.time) {
+    throw new Error("Token and time field names must be different");
   }
 
   // Generate HMAC token
