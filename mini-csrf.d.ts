@@ -1,9 +1,12 @@
 // Express-like types for compatibility without requiring @types/express
 interface Request {
-  ip?: string;
-  headers: { [key: string]: string | string[] | undefined };
-  method: string;
-  body?: any;
+  readonly ip?: string;
+  readonly headers: { 
+    readonly [key: string]: string | string[] | undefined;
+    readonly 'user-agent'?: string;
+  };
+  readonly method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS' | string;
+  readonly body?: any;
 }
 
 interface Response {}
@@ -40,6 +43,7 @@ export interface CsrfProtectionOptions {
 
   /**
    * Time-to-live for tokens in milliseconds. Tokens older than this will be rejected.
+   * Must be a positive number.
    * @default 3600000 (1 hour)
    */
   ttl?: number;
@@ -71,12 +75,12 @@ export interface CsrfProtectionResult {
   /**
    * Express middleware function that validates CSRF tokens on unsafe HTTP methods
    */
-  middleware: CsrfMiddleware;
+  readonly middleware: CsrfMiddleware;
 
   /**
    * Function to generate CSRF token HTML for forms
    */
-  csrfTokenHtml: CsrfTokenHtml;
+  readonly csrfTokenHtml: CsrfTokenHtml;
 }
 
 /**
@@ -86,7 +90,7 @@ export interface CsrfError extends Error {
   /**
    * Error code for CSRF validation failures
    */
-  code: "EBADCSRFTOKEN";
+  readonly code: "EBADCSRFTOKEN";
 }
 
 /**
