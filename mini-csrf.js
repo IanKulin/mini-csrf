@@ -1,6 +1,20 @@
 // mini-csrf/index.js
 import crypto from "crypto";
 
+export function constantTimeEquals(a, b) {
+  const strA = String(a || "");
+  const strB = String(b || "");
+  // result is an accumulator for all the errors
+  let result = strA.length ^ strB.length;
+  const maxLength = Math.max(strA.length, strB.length);
+  for (let i = 0; i < maxLength; i++) {
+    const charA = i < strA.length ? strA.charCodeAt(i) : 0;
+    const charB = i < strB.length ? strB.charCodeAt(i) : 0;
+    result |= charA ^ charB;
+  }
+  return result === 0;
+}
+
 export default function csrfProtection({
   secret,
   fieldNames = { token: "_csrf_token", time: "_csrf_time" },
@@ -39,7 +53,7 @@ export default function csrfProtection({
     const expected = generateToken(getUserIdentifier(req), time);
     const age = now - Number(time);
 
-    if (token !== expected) {
+    if (!constantTimeEquals(token, expected)) {
       return next(makeCsrfError("Invalid CSRF token"));
     }
 

@@ -1,6 +1,6 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert";
-import csrfProtection from "../mini-csrf.js";
+import csrfProtection, { constantTimeEquals } from "../mini-csrf.js";
 import crypto from "crypto";
 
 describe("CSRF Protection", () => {
@@ -293,5 +293,49 @@ describe("CSRF Protection", () => {
       assert.strictEqual(nextError.code, "EBADCSRFTOKEN");
       assert.match(nextError.message, /Invalid CSRF token/);
     });
+  });
+});
+
+describe("constantTimeEquals", () => {
+  it("should return true for identical strings", () => {
+    assert.strictEqual(constantTimeEquals("hello", "hello"), true);
+  });
+
+  it("should return false for different strings same length", () => {
+    assert.strictEqual(constantTimeEquals("hello", "world"), false);
+  });
+
+  it("should return false for different lengths", () => {
+    assert.strictEqual(constantTimeEquals("hello", "hi"), false);
+  });
+
+  it("should return true for empty strings", () => {
+    assert.strictEqual(constantTimeEquals("", ""), true);
+  });
+
+  it("should handle null/undefined values", () => {
+    assert.strictEqual(constantTimeEquals(null, null), true);
+    assert.strictEqual(constantTimeEquals(undefined, undefined), true);
+    assert.strictEqual(constantTimeEquals(null, ""), true);
+    assert.strictEqual(constantTimeEquals("", undefined), true);
+    assert.strictEqual(constantTimeEquals("hello", null), false);
+  });
+
+  it("should handle long strings correctly", () => {
+    const longStr1 = "a".repeat(300);
+    const longStr2 = "a".repeat(300);
+    const longStr3 = "a".repeat(299) + "b";
+    
+    assert.strictEqual(constantTimeEquals(longStr1, longStr2), true);
+    assert.strictEqual(constantTimeEquals(longStr1, longStr3), false);
+  });
+
+  it("should work with typical CSRF tokens", () => {
+    const token1 = "abc123def456ghi789";
+    const token2 = "abc123def456ghi789";
+    const token3 = "abc123def456ghi788";
+    
+    assert.strictEqual(constantTimeEquals(token1, token2), true);
+    assert.strictEqual(constantTimeEquals(token1, token3), false);
   });
 });
