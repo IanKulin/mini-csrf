@@ -12,6 +12,8 @@ The use case for it would be when you need light-weight stateless non-session ba
 
 The CSRF token is a [HMAC](https://en.wikipedia.org/wiki/HMAC) hash of the browser user-agent, IP address, the time and a server secret. The token and the time are inserted into the web page that calls a mutating route. The server is able to confirm the correctness of the token by re-creating it, then the time provided is checked to ensure its within the tolerance.
 
+Token comparisons are done in constant time to avoid timing attacks.
+
 ### Comparisons
 
 | Feature                               | mini-csrf                       | Double Submit Cookies | Synchronizer Token             |
@@ -137,7 +139,7 @@ const csrf = csrfProtection({
 
 ## Contributing
 
-Contributions and issues are welcome, especially for security concerns.
+Contributions and issues are [welcome](https://github.com/IanKulin/mini-csrf/issues), especially for security concerns.
 
 ## Tests
 
@@ -161,3 +163,4 @@ The visit http://localhost:3000
 ## Versions
 
 - 1.0.0 - initial
+- 1.0.1 - README fixes
