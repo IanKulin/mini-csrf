@@ -1,8 +1,9 @@
 {
   "name": "mini-csrf",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A small, stateless, session-less CSRF protection middleware for Express",
   "main": "mini-csrf.js",
+  "types": "mini-csrf.d.ts",
   "type": "module",
   "scripts": {
     "deploy": "npm publish --access public",
@@ -24,6 +25,7 @@
   ],
   "files": [
     "mini-csrf.js",
+    "mini-csrf.d.ts",
     "README.md",
     "LICENSE"
   ],
@@ -37,6 +39,7 @@
     "eslint": "^9.30.1",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3"
   }
 }
