@@ -5,6 +5,9 @@
   "main": "mini-csrf.js",
   "types": "mini-csrf.d.ts",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "deploy": "npm publish --access public",
     "example": "node ./example/server.js",
