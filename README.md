@@ -92,10 +92,9 @@ Uses the built-in Node test runner - available from Node 20
 To run a local demo of `mini-csrf` in an Express app from a cloned repo:
 
 ```bash
-cd example
-npm install
-npm start
+cd example && npm install && npm start
 ```
+The visit http://localhost:3000
 
 ## License
 
