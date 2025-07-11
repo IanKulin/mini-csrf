@@ -91,7 +91,7 @@ The server secret used to generate HMAC tokens. Must be at least 32 characters l
 
 ```javascript
 const csrf = csrfProtection({
-  secret: "your-very-long-secret-key-here-minimum-32-chars",
+  secret: "at-least-32-characters-long-csrf-secret",
 });
 ```
 
@@ -103,7 +103,7 @@ Customize the names of the hidden form fields. Default values shown below:
 
 ```javascript
 const csrf = csrfProtection({
-  secret: "your-secret-key",
+  secret: "at-least-32-characters-long-csrf-secret",
   fieldNames: {
     token: "_csrf_token", // default
     time: "_csrf_time", // default
@@ -117,7 +117,7 @@ Time-to-live for tokens in milliseconds. Tokens older than this will be rejected
 
 ```javascript
 const csrf = csrfProtection({
-  secret: "your-secret-key",
+  secret: "at-least-32-characters-long-csrf-secret",
   ttl: 1800000, // 30 minutes
 });
 ```
