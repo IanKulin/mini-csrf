@@ -5,10 +5,11 @@
   "main": "mini-csrf.js",
   "type": "module",
   "scripts": {
+    "deploy": "npm publish --access public",
     "example": "node ./example/server.js",
-    "test": "node --test",
+    "format": "prettier --write .",
     "lint": "eslint . --fix",
-    "format": "prettier --write ."
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
