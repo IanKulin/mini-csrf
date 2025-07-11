@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Book - Sign In</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Our Guest Book!</h1>
+        <p>Please sign in to add your name to our guest book.</p>
+        
+        <% if (typeof error !== 'undefined') { %>
+            <div class="error"><%= error %></div>
+        <% } %>
+        
+        <form action="/" method="POST" class="sign-in-form">
+            <%- csrfTokenHtml %>
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign Guest Book</button>
+        </form>
+        
+        <div class="nav-links">
+            <a href="/guestbook">View Guest Book</a>
+        </div>
+    </div>
+</body>
+</html>

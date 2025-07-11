@@ -1,0 +1,17 @@
+{
+  "name": "mini-csrf-example",
+  "version": "1.0.0",
+  "description": "Example guest book application using mini-csrf",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9"
+  },
+  "author": "",
+  "license": "MIT"
+}

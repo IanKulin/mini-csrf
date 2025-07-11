@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Book - Entries</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Guest Book Entries</h1>
+        
+        <% if (entries.length === 0) { %>
+            <p class="no-entries">No entries yet. Be the first to sign our guest book!</p>
+        <% } else { %>
+            <div class="entries">
+                <% entries.forEach((entry, index) => { %>
+                    <div class="entry">
+                        <div class="entry-number">#<%= index + 1 %></div>
+                        <div class="entry-name"><%= entry.name %></div>
+                        <div class="entry-date"><%= new Date(entry.timestamp).toLocaleString() %></div>
+                    </div>
+                <% }) %>
+            </div>
+            <div class="stats">
+                <p>Total entries: <%= entries.length %></p>
+            </div>
+        <% } %>
+        
+        <div class="nav-links">
+            <a href="/">Sign Guest Book</a>
+        </div>
+    </div>
+</body>
+</html>
