@@ -165,4 +165,4 @@ Then visit http://localhost:3000
 - 1.0.0 - initial
 - 1.0.1 - README fixes
 - 1.0.2 - ReaDmE fIXeS
-- 1.0.3 - types 
+- 1.0.3 - types, input validation
