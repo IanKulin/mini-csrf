@@ -1,6 +1,6 @@
-# mini-csrf
+# mini-csrf [![NPM version](https://img.shields.io/npm/v/mini-csrf.svg?style=flat)](https://www.npmjs.com/package/mini-csrf) [![NPM total downloads](https://img.shields.io/npm/dt/mini-csrf.svg?style=flat)](https://npmjs.org/package/mini-csrf)
 
-A tiny CSRF protection middleware for Express applications using a stateless HMAC token.
+A smol CSRF protection middleware for Express applications using a stateless, session-less, HMAC token.
 
 ## Introduction
 
@@ -51,6 +51,7 @@ const csrf = csrfProtection({
 app.use(csrf.middleware);
 
 // render a form with CSRF token
+// the csrf Token Html actually contains the token and time
 app.get("/form", (req, res) => {
   res.send(`
     <form action="/submit" method="POST">
