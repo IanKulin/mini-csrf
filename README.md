@@ -4,7 +4,7 @@ A smol CSRF protection middleware for Express applications using a stateless, se
 
 ## Introduction
 
-This implementation is probably the smallest possible stateless Cross-Site Request Forgery (CSRF) protection for your Node.js/Express applications that's usably secure. It does _not_ comply with the [OWASP](<(https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)>).
+This implementation is probably the smallest possible stateless Cross-Site Request Forgery (CSRF) protection for your Node.js/Express applications that's usably secure. It does _not_ comply with the [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html).
 
 The use case for it would be when you need light-weight stateless non-session based CSRF protection. If you are using sessions you should use [small-csrf](https://www.npmjs.com/package/small-csrf) instead since it implements an OWASP compliant Double-Submit Cookie Pattern.
 
