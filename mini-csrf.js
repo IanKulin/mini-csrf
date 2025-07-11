@@ -55,6 +55,8 @@ export default function csrfProtection({
   // Middleware to validate CSRF on unsafe methods
   function middleware(req, res, next) {
     const method = req.method.toUpperCase();
+
+    // Skip validation for non-mutable methods
     if (["GET", "HEAD", "OPTIONS"].includes(method)) return next();
 
     const token = req.body?.[fieldNames.token];
@@ -84,6 +86,7 @@ export default function csrfProtection({
     const time = Date.now().toString();
     const userId = getUserIdentifier(req);
     const token = generateToken(userId, time);
+    // field names are checked for safety at middleware creation
     return `
       <input type="hidden" name="${fieldNames.token}" value="${token}" />
       <input type="hidden" name="${fieldNames.time}" value="${time}" />
