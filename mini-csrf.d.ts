@@ -20,7 +20,7 @@ export interface CsrfProtectionOptions {
    * Server secret used to generate HMAC tokens. Must be at least 32 characters long.
    */
   secret: string;
-  
+
   /**
    * Custom field names for the CSRF token and timestamp
    */
@@ -30,14 +30,14 @@ export interface CsrfProtectionOptions {
      * @default "_csrf_token"
      */
     token: string;
-    
+
     /**
      * Name of the hidden form field containing the timestamp
      * @default "_csrf_time"
      */
     time: string;
   };
-  
+
   /**
    * Time-to-live for tokens in milliseconds. Tokens older than this will be rejected.
    * @default 3600000 (1 hour)
@@ -72,7 +72,7 @@ export interface CsrfProtectionResult {
    * Express middleware function that validates CSRF tokens on unsafe HTTP methods
    */
   middleware: CsrfMiddleware;
-  
+
   /**
    * Function to generate CSRF token HTML for forms
    */
@@ -86,7 +86,7 @@ export interface CsrfError extends Error {
   /**
    * Error code for CSRF validation failures
    */
-  code: 'EBADCSRFTOKEN';
+  code: "EBADCSRFTOKEN";
 }
 
 /**
@@ -96,7 +96,9 @@ export interface CsrfError extends Error {
  * @throws Error if secret is not provided or is less than 32 characters
  * @throws Error if field names are invalid or identical
  */
-declare function csrfProtection(options: CsrfProtectionOptions): CsrfProtectionResult;
+declare function csrfProtection(
+  options: CsrfProtectionOptions
+): CsrfProtectionResult;
 
 /**
  * Compares two strings in constant time to prevent timing attacks

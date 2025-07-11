@@ -1,4 +1,3 @@
-// mini-csrf/index.js
 import crypto from "crypto";
 
 export function constantTimeEquals(a, b) {
@@ -23,13 +22,27 @@ export function validateFieldName(name, type) {
   }
 }
 
-export default function csrfProtection({
-  secret,
-  fieldNames = { token: "_csrf_token", time: "_csrf_time" },
-  ttl = 3600_000,
-}) {
-  if (!secret || secret.length < 32) {
+export default function csrfProtection(options) {
+  // Validate options parameter
+  if (!options || typeof options !== "object") {
+    throw new Error("Options parameter is required and must be an object");
+  }
+
+  // Destructure with defaults after validation
+  const {
+    secret,
+    fieldNames = { token: "_csrf_token", time: "_csrf_time" },
+    ttl = 3600_000,
+  } = options;
+
+  // Validate secret
+  if (!secret || typeof secret !== "string" || secret.length < 32) {
     throw new Error("CSRF secret must be at least 32 characters long");
+  }
+
+  // Validate fieldNames
+  if (fieldNames !== null && typeof fieldNames !== "object") {
+    throw new Error("fieldNames must be an object");
   }
 
   validateFieldName(fieldNames.token, "token");
@@ -37,6 +50,11 @@ export default function csrfProtection({
 
   if (fieldNames.token === fieldNames.time) {
     throw new Error("Token and time field names must be different");
+  }
+
+  // Validate ttl
+  if (typeof ttl !== "number" || ttl <= 0 || !Number.isFinite(ttl)) {
+    throw new Error("ttl must be a positive finite number");
   }
 
   // Generate HMAC token
