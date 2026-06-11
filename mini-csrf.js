@@ -67,7 +67,7 @@ export default function csrfProtection(options) {
 
   // Extract user identifier from request (IP + UA)
   function getUserIdentifier(req) {
-    return (req.ip || "") + (req.headers["user-agent"] || "");
+    return `${req.ip || ""}\x00${req.headers["user-agent"] || ""}`;
   }
 
   // Middleware to validate CSRF on unsafe methods
