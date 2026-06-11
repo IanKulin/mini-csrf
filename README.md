@@ -167,3 +167,4 @@ Then visit http://localhost:3000
 - 1.0.2 - ReaDmE fIXeS
 - 1.0.3 - types, input validation
 - 1.0.4 - NPM publish via GitHub Action
+- 1.0.4 - bugfix ip-ua-concat-collision, 

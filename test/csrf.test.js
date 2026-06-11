@@ -41,7 +41,7 @@ describe("CSRF Protection", () => {
   }
 
   function getUserIdentifier(req) {
-    return (req.ip || "") + (req.headers["user-agent"] || "");
+    return `${req.ip || ""}\x00${req.headers["user-agent"] || ""}`;
   }
 
   describe("Initialization", () => {
