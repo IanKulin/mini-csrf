@@ -1,11 +1,19 @@
 // Express-like types for compatibility without requiring @types/express
 interface Request {
   readonly ip?: string;
-  readonly headers: { 
+  readonly headers: {
     readonly [key: string]: string | string[] | undefined;
-    readonly 'user-agent'?: string;
+    readonly "user-agent"?: string;
   };
-  readonly method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS' | string;
+  readonly method:
+    | "GET"
+    | "POST"
+    | "PUT"
+    | "DELETE"
+    | "PATCH"
+    | "HEAD"
+    | "OPTIONS"
+    | string;
   readonly body?: any;
 }
 
